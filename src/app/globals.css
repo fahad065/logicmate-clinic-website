@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f6fafa;
+  --foreground: #0f1f24;
+
+  --brand-teal: #0d9488;
+  --brand-teal-dark: #0f766e;
+  --brand-teal-soft: #ccfbf1;
+  --brand-navy: #0b2530;
+  --brand-navy-soft: #123543;
+  --brand-coral: #f97362;
+  --brand-mist: #eef6f6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-teal: var(--brand-teal);
+  --color-teal-dark: var(--brand-teal-dark);
+  --color-teal-soft: var(--brand-teal-soft);
+  --color-navy: var(--brand-navy);
+  --color-navy-soft: var(--brand-navy-soft);
+  --color-coral: var(--brand-coral);
+  --color-mist: var(--brand-mist);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+/* Shared form control used on Book + Contact */
+.input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.9rem;
+  color: var(--foreground);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.input:focus {
+  border-color: var(--brand-teal);
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.45); }
+  70% { box-shadow: 0 0 0 14px rgba(13, 148, 136, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
+}
+.animate-pulse-ring {
+  animation: pulse-ring 2.2s infinite;
+}
