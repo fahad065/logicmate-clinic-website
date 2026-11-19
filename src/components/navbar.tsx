@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { href: "/services", label: "Services" },
   { href: "/doctors", label: "Doctors" },
   { href: "/insurance", label: "Insurance" },
-  { href: "/locations", label: "Branches" },
+  { href: "/locations", label: "Locations" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -27,7 +27,7 @@ export function Navbar() {
             <Stethoscope className="size-5" />
           </span>
           <span className="leading-none">
-            <span className="font-display block text-lg font-extrabold text-navy">Noor</span>
+            <span className="font-display block text-lg font-extrabold text-navy">Meridian</span>
             <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-teal-dark">
               Family Clinic
             </span>
@@ -52,9 +52,9 @@ export function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-4 lg:flex">
-          <a href="tel:+97145550141" className="flex items-center gap-1.5 text-sm font-semibold text-navy/70 hover:text-teal-dark">
-            <Phone className="size-3.5" /> 800 NOOR
-          </a>
+          <Link href="/locations" className="flex items-center gap-1.5 text-sm font-semibold text-navy/70 hover:text-teal-dark">
+            <Phone className="size-3.5" /> Call a clinic
+          </Link>
           <Link
             href="/book"
             className="rounded-full bg-teal px-5 py-2 text-sm font-bold text-white shadow-sm transition-colors hover:bg-teal-dark"

@@ -2,22 +2,23 @@ import Link from "next/link";
 import { HeartHandshake, Clock, Users, ShieldCheck, Sparkles } from "lucide-react";
 import { PageHero } from "@/components/page-hero";
 import { SafeImg } from "@/components/safe-img";
-import { locations } from "@/data/locations";
+import { locations, countries } from "@/data/locations";
 import { doctors } from "@/data/doctors";
 
 const VALUES = [
   { icon: Clock, title: "Your time matters", desc: "Appointments run on time, results come to your phone, and follow-ups within 7 days are free." },
   { icon: Users, title: "Family medicine first", desc: "One doctor who knows your family, with specialists down the corridor when you need them." },
   { icon: ShieldCheck, title: "Clear prices", desc: "Every self-pay price is published. No surprises at the desk." },
-  { icon: Sparkles, title: "Comfortable, modern clinics", desc: "Bright rooms, female doctors available and kids' corners at our family branches." },
+  { icon: Sparkles, title: "Local in every country", desc: "Each clinic follows its country's rules, takes its local insurance plans and hires local doctors." },
 ];
 
 const TIMELINE = [
-  { year: "2014", text: "Dr. Sara Haddad opens the first Noor clinic in a Jumeirah villa — two doctors and a nurse." },
-  { year: "2017", text: "Al Barsha branch opens with an in-house lab and women's health clinic." },
-  { year: "2020", text: "Video consultations launch, so patients can see a GP from home." },
-  { year: "2022", text: "Expansion to Abu Dhabi (Al Reem Island) and Sharjah (Al Majaz)." },
-  { year: "2024", text: "Dubai Marina branch opens for dermatology, aesthetics and dental." },
+  { year: "2012", text: "Dr. Priya Shah opens the first Meridian clinic on Marylebone High Street, London — two doctors and a nurse." },
+  { year: "2015", text: "Toronto opens as a family-medicine and walk-in clinic." },
+  { year: "2018", text: "Dubai opens in Al Barsha, with women's health and dental." },
+  { year: "2020", text: "Video consultations launch in every country we operate in." },
+  { year: "2022", text: "Sydney opens on Pitt Street, with skin checks and physiotherapy." },
+  { year: "2024", text: "New York opens in Midtown Manhattan." },
 ];
 
 export default function AboutPage() {
@@ -26,8 +27,8 @@ export default function AboutPage() {
       <PageHero
         icon={HeartHandshake}
         eyebrow="Our Story"
-        title="A family clinic, grown with its families"
-        subtitle={`From one villa in Jumeirah to ${locations.length} branches and ${doctors.length} doctors and therapists across the UAE.`}
+        title="A family clinic that moved with its families"
+        subtitle={`From one London clinic to ${locations.length} clinics in ${countries.length} countries, with ${doctors.length} doctors and therapists.`}
       />
 
       <section className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-20 sm:px-8 lg:grid-cols-2">
@@ -42,10 +43,11 @@ export default function AboutPage() {
             Good care should be easy to get
           </h2>
           <p className="mt-4 text-foreground/65">
-            Noor started because getting a doctor&apos;s appointment in the evening, with a
-            doctor who spoke your language and took your insurance, was harder than it
-            should be. Ten years later that is still the whole idea: same-day appointments,
-            published prices, direct insurance billing and doctors who take the time to explain.
+            Meridian started because getting a doctor&apos;s appointment in the evening, with a
+            doctor who spoke your language and took your insurance, was harder than it should
+            be — and it got harder every time our patients moved country. Today one record
+            follows you from London to Toronto, Dubai, Sydney and New York: same-day
+            appointments, published prices and doctors who take the time to explain.
           </p>
           <Link href="/doctors" className="mt-6 inline-block rounded-full bg-teal px-6 py-3 text-sm font-bold text-white hover:bg-teal-dark">
             Meet our doctors

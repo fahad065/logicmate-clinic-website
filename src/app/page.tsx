@@ -15,7 +15,7 @@ import {
 import { SafeImg } from "@/components/safe-img";
 import { services } from "@/data/services";
 import { doctors } from "@/data/doctors";
-import { locations, cities, allInsurers } from "@/data/locations";
+import { locations, countries, countryOf, allInsurers } from "@/data/locations";
 
 const FEATURED = ["gp", "paeds", "derm", "physio"].map((id) => services.find((s) => s.id === id)!);
 const FEATURED_IMG: Record<string, string> = {
@@ -28,15 +28,15 @@ const img = (id: string, w = 800) => `https://images.unsplash.com/${id}?auto=for
 
 const FEATURES = [
   { icon: Clock, title: "Seen on time", desc: "Same-day GP appointments at every branch, and an average wait under 15 minutes." },
-  { icon: ShieldCheck, title: "Direct insurance billing", desc: `${allInsurers.length}+ insurance networks accepted — we bill your insurer directly at the desk.` },
-  { icon: Languages, title: "Doctors who speak your language", desc: "English, Arabic, Hindi, Urdu, French, Malayalam and Tamil across our team." },
-  { icon: HeartPulse, title: "One file, every branch", desc: "Your records follow you — visit Jumeirah today and Al Barsha next week." },
+  { icon: ShieldCheck, title: "Your insurance, locally", desc: "Medicare, OHIP, Bupa, Aetna, Daman and more — each clinic takes the plans used in its country." },
+  { icon: Languages, title: "Doctors who speak your language", desc: "English, Arabic, Spanish, Mandarin, Hindi, French and more across our team." },
+  { icon: HeartPulse, title: "One record, every clinic", desc: "Travelling or relocating? Your records follow you from London to Sydney." },
 ];
 
 const TESTIMONIALS = [
-  { quote: "Booked a paediatrician at 9 PM and we were seen the next morning. Dr. Omar was wonderful with my son.", name: "Fatima A.", place: "Jumeirah branch" },
-  { quote: "They billed my AXA card directly and the blood results were on my phone the next day. Easiest clinic visit I've had in Dubai.", name: "Mark T.", place: "Al Barsha branch" },
-  { quote: "Finally a clinic in Sharjah with female doctors in the evening. The reception team is so kind.", name: "Huda S.", place: "Al Majaz branch" },
+  { quote: "Booked a children's doctor at 9 PM and we were seen the next morning. Dr. Reid was wonderful with my son.", name: "Jessica M.", place: "New York clinic" },
+  { quote: "Bulk billed for my daughter, and the skin check took ten minutes. Easiest GP visit I've had in Sydney.", name: "Liam O.", place: "Sydney clinic" },
+  { quote: "Moved from London to Dubai and my records were already there. They billed my Daman card directly.", name: "Huda S.", place: "Dubai clinic" },
 ];
 
 export default function HomePage() {
@@ -53,17 +53,17 @@ export default function HomePage() {
         <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-[1.2fr_1fr]">
           <div>
             <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-teal-soft/30 bg-navy/60 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-teal-soft">
-              <Stethoscope className="size-3.5" /> Family Medicine · Specialists · Dental
+              <Stethoscope className="size-3.5" /> 🇺🇸 🇬🇧 🇦🇪 🇦🇺 🇨🇦 · Family Medicine · Specialists
             </span>
             <h1 className="font-display text-balance text-4xl font-extrabold leading-[1.05] sm:text-6xl">
               Care for every age,
               <br />
-              <span className="text-teal-soft">close to home.</span>
+              <span className="text-teal-soft">wherever you are.</span>
             </h1>
             <p className="mt-6 max-w-xl text-balance text-base text-white/75 sm:text-lg">
-              GPs, paediatricians, women&apos;s health, dermatology, dentistry and
-              physiotherapy at {locations.length} branches across {cities.join(", ")} —
-              with same-day appointments and direct insurance billing.
+              Family doctors, paediatricians, women&apos;s health, skin checks and
+              physiotherapy at {locations.length} clinics in {locations.map((l) => l.city).join(", ")} —
+              with same-day appointments and the insurance plans used in each country.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Link
@@ -82,22 +82,22 @@ export default function HomePage() {
           </div>
 
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur sm:p-8">
-            <p className="text-sm font-bold uppercase tracking-widest text-teal-soft">Today at Noor</p>
+            <p className="text-sm font-bold uppercase tracking-widest text-teal-soft">Today at Meridian</p>
             <ul className="mt-5 space-y-4">
               <HeroRow icon={CalendarCheck} title="Same-day GP slots" sub="All branches · walk-ins welcome" />
-              <HeroRow icon={Baby} title="Paediatrics until 10 PM" sub="Jumeirah & Al Reem Island" />
+              <HeroRow icon={Baby} title="Children's doctors" sub="New York, Dubai & Toronto" />
               <HeroRow icon={Microscope} title="Lab results in 24 hours" sub="Sent straight to your phone" />
-              <HeroRow icon={ShieldCheck} title={`${allInsurers.length}+ insurers accepted`} sub="Daman, AXA, NAS, Bupa and more" />
+              <HeroRow icon={ShieldCheck} title={`${allInsurers.length}+ insurance plans`} sub="Medicare, OHIP, Bupa, Aetna, Daman…" />
             </ul>
           </div>
         </div>
 
         <div className="relative border-t border-white/10">
           <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-5 py-8 sm:grid-cols-4 sm:px-8">
-            <Stat value={`${locations.length}`} label="Branches" />
+            <Stat value={`${countries.length}`} label="Countries" />
             <Stat value={`${doctors.length}`} label="Doctors & therapists" />
             <Stat value={`${services.length}+`} label="Services" />
-            <Stat value="40,000+" label="Patients a year" />
+            <Stat value="60,000+" label="Patients a year" />
           </div>
         </div>
       </section>
@@ -131,7 +131,7 @@ export default function HomePage() {
                 <h3 className="font-display mt-1 text-lg font-bold text-navy">{s.name}</h3>
                 <p className="mt-1.5 text-sm text-foreground/60">{s.description}</p>
                 <p className="mt-3 text-sm font-bold text-navy">
-                  {s.price} <span className="font-medium text-foreground/45">· {s.duration}</span>
+                  {s.duration} <span className="font-medium text-foreground/45">· prices by country</span>
                 </p>
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function HomePage() {
       <section className="bg-mist py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <div className="mb-12 text-center">
-            <p className="text-sm font-bold uppercase tracking-widest text-teal-dark">Why Noor</p>
+            <p className="text-sm font-bold uppercase tracking-widest text-teal-dark">Why Meridian</p>
             <h2 className="font-display mt-2 text-3xl font-extrabold text-navy sm:text-4xl">
               A clinic that respects your time
             </h2>
@@ -168,7 +168,7 @@ export default function HomePage() {
           <div>
             <p className="text-sm font-bold uppercase tracking-widest text-teal-dark">Meet Our Doctors</p>
             <h2 className="font-display mt-2 text-3xl font-extrabold text-navy sm:text-4xl">
-              Experienced, licensed and unhurried
+              Licensed locally, unhurried everywhere
             </h2>
           </div>
           <Link href="/doctors" className="flex shrink-0 items-center gap-1.5 text-sm font-bold text-navy hover:text-teal-dark">
@@ -197,17 +197,17 @@ export default function HomePage() {
           <div>
             <p className="text-sm font-bold uppercase tracking-widest text-teal-soft">Insurance</p>
             <h2 className="font-display mt-2 text-3xl font-extrabold sm:text-4xl">
-              We bill your insurer directly
+              The insurance used where you live
             </h2>
             <p className="mt-4 text-white/65">
-              Accepted networks differ slightly by branch — check your card against
-              each branch before you visit.
+              Every clinic takes the public and private plans of its own country —
+              check your plan against the clinic you&apos;ll visit.
             </p>
             <Link
               href="/insurance"
               className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-teal px-6 py-3 text-sm font-bold text-white hover:bg-teal-dark"
             >
-              See insurance by branch <ArrowRight className="size-4" />
+              Check your insurance <ArrowRight className="size-4" />
             </Link>
           </div>
           <div className="flex flex-wrap gap-2.5">
@@ -226,17 +226,17 @@ export default function HomePage() {
           <div>
             <p className="text-sm font-bold uppercase tracking-widest text-teal-dark">Find Us</p>
             <h2 className="font-display mt-2 text-3xl font-extrabold text-navy sm:text-4xl">
-              {locations.length} branches across the UAE
+              {locations.length} clinics, {countries.length} countries
             </h2>
             <p className="mt-4 text-foreground/65">
-              From Jumeirah to Al Reem Island, there&apos;s a Noor clinic near you — with
-              evening hours and Friday clinics at most branches.
+              From Manhattan to Marylebone, Al Barsha, Pitt Street and Bloor Street —
+              evening and weekend hours at every clinic, plus video visits wherever you are.
             </p>
             <Link
               href="/locations"
               className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-navy px-6 py-3 text-sm font-bold text-white hover:bg-navy-soft"
             >
-              View all branches <ArrowRight className="size-4" />
+              View all clinics <ArrowRight className="size-4" />
             </Link>
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -245,9 +245,9 @@ export default function HomePage() {
                 <MapPin className="size-4 shrink-0 text-teal" />
                 <div>
                   <p className="text-sm font-semibold text-navy">
-                    {loc.area}, {loc.city}
+                    {countryOf(loc.country).flag} {loc.city}, {countryOf(loc.country).name}
                   </p>
-                  <p className="text-xs text-foreground/50">{loc.hours}</p>
+                  <p className="text-xs text-foreground/50">{loc.weekdayHours}</p>
                 </div>
               </div>
             ))}

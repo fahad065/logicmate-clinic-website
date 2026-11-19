@@ -5,11 +5,11 @@ import { useSearchParams } from "next/navigation";
 import { CalendarCheck, CheckCircle2 } from "lucide-react";
 import { PageHero } from "@/components/page-hero";
 import { Field } from "@/components/field";
-import { locations } from "@/data/locations";
+import { locations, countryOf } from "@/data/locations";
 import { doctors } from "@/data/doctors";
 import { services } from "@/data/services";
 
-const TIMES = ["Morning (8 AM – 12 PM)", "Afternoon (12 – 5 PM)", "Evening (5 – 10 PM)"];
+const TIMES = ["Morning", "Afternoon", "Evening", "Weekend"];
 
 export function BookingForm() {
   const params = useSearchParams();
@@ -23,7 +23,7 @@ export function BookingForm() {
     phone: "",
     email: "",
     branch: preBranch?.id ?? locations[0].id,
-    service: services[0].id,
+    service: services.find((s) => s.price[(preBranch ?? locations[0]).country])!.id,
     doctor: preDoctor?.id ?? "",
     date: "",
     time: TIMES[0],
@@ -36,7 +36,9 @@ export function BookingForm() {
   }
 
   const branch = locations.find((l) => l.id === form.branch)!;
-  const branchDoctors = doctors.filter((d) => d.branches.includes(branch.area));
+  const branchDoctors = doctors.filter((d) => d.branches.includes(branch.id));
+  const branchServices = services.filter((s) => s.price[branch.country]);
+  const country = countryOf(branch.country);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -88,7 +90,7 @@ export function BookingForm() {
               <input required type="text" value={form.name} onChange={(e) => update("name", e.target.value)} placeholder="Patient's name" className="input" />
             </Field>
             <Field label="Mobile number" required>
-              <input required type="tel" value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder="+971 5x xxx xxxx" className="input" />
+              <input required type="tel" value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder="Include your country code" className="input" />
             </Field>
           </div>
 
@@ -100,18 +102,27 @@ export function BookingForm() {
             <Field label="Branch" required>
               <select
                 value={form.branch}
-                onChange={(e) => setForm((f) => ({ ...f, branch: e.target.value, doctor: "" }))}
+                onChange={(e) => {
+                  const next = locations.find((l) => l.id === e.target.value)!;
+                  setForm((f) => ({
+                    ...f,
+                    branch: next.id,
+                    doctor: "",
+                    insurance: "",
+                    service: services.some((s) => s.id === f.service && s.price[next.country]) ? f.service : services.find((s) => s.price[next.country])!.id,
+                  }));
+                }}
                 className="input"
               >
                 {locations.map((l) => (
-                  <option key={l.id} value={l.id}>{l.area}, {l.city}</option>
+                  <option key={l.id} value={l.id}>{countryOf(l.country).flag} {l.city}, {countryOf(l.country).name}</option>
                 ))}
               </select>
             </Field>
             <Field label="Service" required>
               <select value={form.service} onChange={(e) => update("service", e.target.value)} className="input">
-                {services.map((s) => (
-                  <option key={s.id} value={s.id}>{s.name}</option>
+                {branchServices.map((s) => (
+                  <option key={s.id} value={s.id}>{s.name} — {s.price[branch.country]}</option>
                 ))}
               </select>
             </Field>
@@ -130,7 +141,7 @@ export function BookingForm() {
             <Field label="Preferred date" required>
               <input required type="date" value={form.date} onChange={(e) => update("date", e.target.value)} className="input" />
             </Field>
-            <Field label="Preferred time" required>
+            <Field label={`Preferred time (${branch.timezone})`} required>
               <select value={form.time} onChange={(e) => update("time", e.target.value)} className="input">
                 {TIMES.map((t) => (
                   <option key={t} value={t}>{t}</option>
@@ -160,7 +171,7 @@ export function BookingForm() {
             {submitting ? "Sending request…" : "Request appointment"}
           </button>
           <p className="text-center text-xs text-foreground/45">
-            In an emergency, don&apos;t wait — call 998 or go to the nearest A&amp;E.
+            In an emergency, don&apos;t wait — call {country.emergency} ({country.name}) or go to the nearest emergency department.
           </p>
         </form>
       </section>

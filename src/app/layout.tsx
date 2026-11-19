@@ -16,9 +16,9 @@ const display = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Noor Family Clinic — Care for every age, close to home",
+  title: "Meridian Family Clinic — Care for every age, wherever you are",
   description:
-    "Noor Family Clinic — GPs, paediatrics, women's health, dermatology, dental and physiotherapy across 5 branches in Dubai, Abu Dhabi and Sharjah. Most insurance cards accepted.",
+    "Meridian Family Clinic — family doctors, paediatrics, women's health, skin checks and physiotherapy in New York, London, Dubai, Sydney and Toronto. Same-day appointments; most insurance plans accepted.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

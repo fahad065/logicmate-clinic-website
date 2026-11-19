@@ -6,6 +6,12 @@ import { UserRound, MapPin, Languages } from "lucide-react";
 import { PageHero } from "@/components/page-hero";
 import { SafeImg } from "@/components/safe-img";
 import { doctors } from "@/data/doctors";
+import { locations, countryOf } from "@/data/locations";
+
+const branchLabel = (id: string) => {
+  const l = locations.find((x) => x.id === id)!;
+  return `${countryOf(l.country).flag} ${l.city}`;
+};
 
 export default function DoctorsPage() {
   const [femaleOnly, setFemaleOnly] = useState(false);
@@ -17,7 +23,7 @@ export default function DoctorsPage() {
         icon={UserRound}
         eyebrow="Our Team"
         title="Meet our doctors"
-        subtitle="DHA, DOH and MOHAP licensed doctors and therapists — speaking seven languages between them."
+        subtitle="Every doctor is licensed in the country they practise in — GMC, AHPRA, CPSO, DHA and US state boards — and between them they speak ten languages."
       />
 
       <section className="mx-auto max-w-7xl px-5 py-14 sm:px-8">
@@ -45,7 +51,7 @@ export default function DoctorsPage() {
                     <Languages className="mt-0.5 size-3.5 shrink-0 text-teal" /> {d.languages.join(", ")}
                   </p>
                   <p className="flex items-start gap-1.5">
-                    <MapPin className="mt-0.5 size-3.5 shrink-0 text-teal" /> {d.branches.join(", ")}
+                    <MapPin className="mt-0.5 size-3.5 shrink-0 text-teal" /> {d.branches.map(branchLabel).join(", ")}
                   </p>
                 </div>
                 <Link

@@ -1,10 +1,9 @@
 import Link from "next/link";
-import { Stethoscope, MapPin, Phone, Mail, Siren } from "lucide-react";
+import { Stethoscope, MapPin, Mail, Siren } from "lucide-react";
 import { FaInstagram, FaFacebook, FaWhatsapp } from "react-icons/fa";
-import { locations, cities } from "@/data/locations";
+import { locations, countries, countryOf } from "@/data/locations";
 
 export function Footer() {
-  const flagship = locations[0];
   return (
     <footer className="bg-navy text-white/80">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-4">
@@ -13,22 +12,16 @@ export function Footer() {
             <span className="flex size-8 items-center justify-center rounded-lg bg-teal text-white">
               <Stethoscope className="size-4" />
             </span>
-            <span className="font-display text-lg font-extrabold text-white">Noor Family Clinic</span>
+            <span className="font-display text-lg font-extrabold text-white">Meridian Family Clinic</span>
           </div>
           <p className="text-sm leading-relaxed text-white/55">
-            {locations.length} branches across {cities.join(", ")}. Family doctors,
-            specialists, dental and physiotherapy — care for every age, close to home.
+            {locations.length} clinics in {countries.length} countries. Family doctors, specialists,
+            skin checks and physiotherapy — care for every age, wherever you are.
           </p>
           <div className="mt-4 flex gap-3">
-            <a href="#" aria-label="Instagram" className="text-white/55 hover:text-teal-soft">
-              <FaInstagram className="size-5" />
-            </a>
-            <a href="#" aria-label="Facebook" className="text-white/55 hover:text-teal-soft">
-              <FaFacebook className="size-5" />
-            </a>
-            <a href="#" aria-label="WhatsApp" className="text-white/55 hover:text-teal-soft">
-              <FaWhatsapp className="size-5" />
-            </a>
+            <a href="#" aria-label="Instagram" className="text-white/55 hover:text-teal-soft"><FaInstagram className="size-5" /></a>
+            <a href="#" aria-label="Facebook" className="text-white/55 hover:text-teal-soft"><FaFacebook className="size-5" /></a>
+            <a href="#" aria-label="WhatsApp" className="text-white/55 hover:text-teal-soft"><FaWhatsapp className="size-5" /></a>
           </div>
         </div>
 
@@ -38,27 +31,23 @@ export function Footer() {
             <li><Link href="/services" className="hover:text-teal-soft">Services &amp; Prices</Link></li>
             <li><Link href="/doctors" className="hover:text-teal-soft">Our Doctors</Link></li>
             <li><Link href="/insurance" className="hover:text-teal-soft">Insurance</Link></li>
-            <li><Link href="/locations" className="hover:text-teal-soft">All Branches</Link></li>
+            <li><Link href="/locations" className="hover:text-teal-soft">All Clinics</Link></li>
             <li><Link href="/book" className="hover:text-teal-soft">Book Appointment</Link></li>
           </ul>
         </div>
 
         <div>
-          <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-teal-soft">
-            Main branch — {flagship.area}
-          </h4>
-          <ul className="space-y-2.5 text-sm">
-            <li className="flex items-start gap-2">
-              <MapPin className="mt-0.5 size-4 shrink-0 text-teal-soft" />
-              <span>{flagship.address}</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <Phone className="size-4 shrink-0 text-teal-soft" />
-              <span>{flagship.phone}</span>
-            </li>
-            <li className="flex items-center gap-2">
+          <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-teal-soft">Our clinics</h4>
+          <ul className="space-y-2 text-sm">
+            {locations.map((l) => (
+              <li key={l.id} className="flex items-center gap-2">
+                <MapPin className="size-4 shrink-0 text-teal-soft" />
+                <span>{l.city}, {countryOf(l.country).name}</span>
+              </li>
+            ))}
+            <li className="flex items-center gap-2 pt-1">
               <Mail className="size-4 shrink-0 text-teal-soft" />
-              <span>care@noorclinic.example</span>
+              <span>care@meridianclinic.example</span>
             </li>
           </ul>
         </div>
@@ -68,15 +57,21 @@ export function Footer() {
           <p className="flex items-start gap-2 text-sm text-white/65">
             <Siren className="mt-0.5 size-4 shrink-0 text-coral" />
             <span>
-              We are an outpatient clinic, not an emergency department. In an emergency
-              call <strong className="text-white">998</strong> (ambulance) or go to the nearest hospital A&amp;E.
+              We are outpatient clinics, not emergency departments. In an emergency call your
+              local emergency number:{" "}
+              {countries.map((c, i) => (
+                <span key={c.code}>
+                  <strong className="text-white">{c.emergency}</strong> {c.name === "United Arab Emirates" ? "UAE" : c.name === "United Kingdom" ? "UK" : c.name === "United States" ? "USA" : c.name}
+                  {i < countries.length - 1 ? " · " : "."}
+                </span>
+              ))}
             </span>
           </p>
         </div>
       </div>
 
       <div className="border-t border-white/10 py-5 text-center text-xs text-white/35">
-        © {new Date().getFullYear()} Noor Family Clinic. Demo site for illustrative purposes — not a real clinic.
+        © {new Date().getFullYear()} Meridian Family Clinic. Demo site for illustrative purposes — not a real clinic.
       </div>
     </footer>
   );
